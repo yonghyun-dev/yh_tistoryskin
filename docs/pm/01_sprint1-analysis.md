@@ -14,6 +14,20 @@
 | 2026-04-19 | [위임→general-purpose] | 티스토리 2.0 스킨 공식 규격 조사 — skin.html 구조, 치환자, 조건부 블록, index.xml 변수/커버, 페이지 분기, RSS, 관련글/이전-다음, 모바일 처리 |
 | 2026-04-19 | [완료←general-purpose] | 공식 GitBook 28페이지 + Ray 테마 소스 직접 확인. `docs/design/tistory-skin-spec.md` (1,149줄) 저장. 파생 블로그 근거 사용 없음. 확인 필요 10개 항목은 별도 표기 |
 | 2026-04-19 | [분석→설계] | 규격 확정 → 스프린트 구성 + 기술 결정 유저 제안 단계로 진입 |
+| 2026-04-19 | [유저 승인] | "ㄱㄱ" — 스프린트 5단계 + T-1~T-6 + variables 11개 전체 승인 |
+| 2026-04-19 | [PM 직접] | 설계 문서 3종 작성 → `docs/design/tech-decisions.md`, `docs/design/sprint-plan.md`, `docs/design/skin-architecture.md` |
+| 2026-04-19 | [위임→design-reviewer] | 설계 3종 교차 검증 + Mermaid 다이어그램 3종 추가 |
+| 2026-04-19 | [완료←design-reviewer] | 조건부 통과. 치명적 3(skin-architecture 의사코드) + 주의 5 + 개선 3 + 확인 필요 3. 보고서: `docs/agents/design-reviewer/01_sprint1-review.md`. 다이어그램 3종: `docs/design/diagrams/*.md` |
+| 2026-04-19 | [PM 직접] | 설계 문서 수정 (C-1~C-3, W-1~W-5, I-1·I-3) 반영. 요구사항 F-20 분리 (I-2): 방명록 유지, 시리즈 범위 제외 |
+| 2026-04-19 | [판단] | About은 `<s_page_rep>` 사용으로 전환 (W-2): index.xml 수정 초기화 위험 회피 |
+| 2026-04-19 | [설계→구현] | 설계 확정. Sprint 1 구현 착수 준비 |
+| 2026-04-19 | [PM 직접] | Sprint 1 코드 작성 — `skin.html` (전 페이지 블록 뼈대), `index.xml` (variables 11개 + cover 2개 + default), `style.css` (토큰 + 리셋 + 헤더/푸터 + 진행률 바 placeholder + 반응형), `images/script.js` (theme 모듈 구현 + 나머지 stub) |
+| 2026-04-19 | [PM 직접] | `docs/design/sprint1-smoke-checklist.md` 작성 — 유저 업로드 스모크 7개 항목 + 이후 스프린트 담당 항목 참조 |
+| 2026-04-19 | [구현→검증] | 유저의 티스토리 스모크 업로드 결과 대기 |
+| 2026-04-19 | [위임→reviewer] | Sprint 1 코드 리뷰 background |
+| 2026-04-19 | [완료←reviewer] | 조건부 통과. 치명적 1 (C-1 variablegroup XML), 주의 5, 개선 5, 확인 필요 4. 보고서: `docs/agents/reviewer/01_sprint1-review.md` |
+| 2026-04-19 | [판단] | 업로드 전 수정 필수: C-1 + W-5. 권장: W-1, W-2, S-1. 이후 스프린트: S-3(토큰), S-4(alt), S-5(URL 노출 검토). 인젝션 N-1/N-2/N-3 는 스모크에서 검증 |
+| 2026-04-19 | [PM 직접] | 5건 수정 반영: index.xml `<variablegroup name="...">` 속성 방식 / `preview.gif` 1x1 GIF 생성 / `script.js` `theme._mql` 객체 보존 / `sprint-plan.md` showListOnCategory 값 교정 / `skin.html` `onkeydown` + `event.key` |
 
 ## 판단 기록
 
@@ -117,11 +131,31 @@
 | R-4 | Ray 테마에만 있는 `[##_calendar_##]` 등 deprecate 가능성 | 공식 문서화된 치환자만 사용, 달력/아카이브 기능은 이번 범위 제외 |
 | R-5 | 외부 CDN(jsdelivr 등) 로드 실패 가능성 | Sprint 1 스모크에서 테스트 후 실패하면 `images/`로 내재화 |
 
+## 판단 기록 (추가)
+
+### P-4. About 섹션 구현 방식 = `<s_page_rep>` 사용
+
+- **결정**: About을 `<s_cover name="about">` 방식이 아닌 티스토리 **페이지 기능**(`<s_page_rep>`)으로 구현
+- **이유**: `<s_cover name="about">` 사용 시 `index.xml <cover>` 에 `about` 아이템 추가 필수 → `index.xml` 수정 시 사용자 설정 초기화 공식 경고(Gotcha #8). 반면 `<s_page_rep>` 는 별도 설정 없이 티스토리 관리자의 "페이지" 메뉴에서 About 페이지 작성만 하면 됨
+- **대안**: `<s_cover name="about">` 사용 — 미선택 (설정 초기화 위험)
+
+### P-5. 시리즈 기능 = 범위 제외
+
+- **결정**: F-20의 "시리즈" 부분은 이번 스킨 범위에서 제외
+- **이유**: 티스토리 공식 치환자 카탈로그(tistory-skin-spec.md §3 전체)에 시리즈 전용 치환자 없음. 공식 미지원 기능 구현은 추측 위에 쌓는 것. 원래 F-20은 "선택" 기능
+- **대안**: JS로 본문 내 시리즈 마커를 스캔해서 유사 기능 구현 — 미선택 (공식 지원 아니므로 유지보수 부담 큼)
+- **추후 대응**: 티스토리가 공식 치환자를 추가하면 재검토
+
 ## 현재 상태
 
 - [x] 유저 요청 수령 및 구조화
 - [x] 요구사항 문서 생성
 - [x] researcher 조사 결과 수령 (`docs/design/tistory-skin-spec.md`)
 - [x] 스프린트 구성 · 기술 결정 초안 작성
-- [ ] **유저 승인 대기** (스프린트 구성 + T-1~T-6 + variables 목록)
-- [ ] 승인 후 설계 문서 확정 → 구현 착수
+- [x] 유저 승인 (2026-04-19 "ㄱㄱ")
+- [x] 설계 문서 3종 작성
+- [x] design-reviewer 교차 검증 → 조건부 통과 + 피드백 반영
+- [x] Sprint 1 코드 작성 (skin.html / index.xml / style.css / images/script.js / preview.gif / 스모크 체크리스트)
+- [x] reviewer 코드 리뷰 → 조건부 통과 + 업로드 전 필수 수정 5건 반영
+- [ ] **유저 스모크 업로드 검증 대기** (현재)
+- [ ] 스모크 통과 → Sprint 1 완료 선언 → Sprint 2 착수

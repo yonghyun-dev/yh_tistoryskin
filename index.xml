@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<skin>
+  <information>
+    <name><![CDATA[Modern Dev Blog]]></name>
+    <version>1.0.0</version>
+    <description><![CDATA[개발 블로그용 모던 스킨. 라이트/다크 지원, 카드 그리드, TOC, 코드 하이라이팅, 마이크로 인터랙션 포함. Stripe · Apple · Vercel docs 무드.]]></description>
+    <license><![CDATA[MIT]]></license>
+  </information>
+
+  <author>
+    <name>yh.kim</name>
+    <homepage></homepage>
+    <email></email>
+  </author>
+
+  <default>
+    <entriesOnPage>10</entriesOnPage>
+    <entriesOnList>10</entriesOnList>
+    <recentEntries>5</recentEntries>
+    <recentComments>5</recentComments>
+    <tagsInCloud>30</tagsInCloud>
+    <sortInCloud>3</sortInCloud>
+    <expandComment>1</expandComment>
+    <expandTrackback>0</expandTrackback>
+    <lengthOfRecentNotice>25</lengthOfRecentNotice>
+    <lengthOfRecentEntry>30</lengthOfRecentEntry>
+    <lengthOfRecentComment>25</lengthOfRecentComment>
+    <lengthOfRecentTrackback>25</lengthOfRecentTrackback>
+    <lengthOfLink>25</lengthOfLink>
+    <showListOnCategory>1</showListOnCategory>
+    <showListLock>0</showListLock>
+    <tree.color>#0A0A0A</tree.color>
+    <tree.bgColor>#FFFFFF</tree.bgColor>
+    <tree.activeColor>#5B5BF5</tree.activeColor>
+    <tree.activeBgColor>#F5F5F7</tree.activeBgColor>
+    <tree.labelLength>20</tree.labelLength>
+    <tree.showValue>1</tree.showValue>
+    <contentWidth>720</contentWidth>
+    <commentMessage.none><![CDATA[아직 댓글이 없어요]]></commentMessage.none>
+    <commentMessage.single><![CDATA[댓글 1]]></commentMessage.single>
+    <trackbackMessage.none><![CDATA[아직 트랙백이 없어요]]></trackbackMessage.none>
+    <trackbackMessage.single><![CDATA[트랙백 1]]></trackbackMessage.single>
+    <cover><![CDATA[
+[
+  {
+    "name": "featured",
+    "title": "",
+    "dataType": "CUSTOM",
+    "data": []
+  },
+  {
+    "name": "list",
+    "title": "",
+    "dataType": "RECENT",
+    "data": { "category": "ALL", "size": 5 }
+  }
+]
+    ]]></cover>
+  </default>
+
+  <cover>
+    <item>
+      <name>featured</name>
+      <label><![CDATA[Featured]]></label>
+      <description><![CDATA[강조할 포스트를 직접 고를 수 있습니다.]]></description>
+    </item>
+    <item>
+      <name>list</name>
+      <label><![CDATA[Recent]]></label>
+      <description><![CDATA[최근 글을 자동으로 보여줍니다.]]></description>
+    </item>
+  </cover>
+
+  <variables>
+    <variablegroup name="Theme">
+      <variable>
+        <name>accent-start</name>
+        <label><![CDATA[액센트 시작색]]></label>
+        <description><![CDATA[제목 악센트·링크 hover·진행률 바 등에 쓰이는 그라데이션의 시작 색.]]></description>
+        <type>COLOR</type>
+        <option />
+        <default>#5B5BF5</default>
+      </variable>
+      <variable>
+        <name>accent-end</name>
+        <label><![CDATA[액센트 끝색]]></label>
+        <description><![CDATA[그라데이션의 끝 색.]]></description>
+        <type>COLOR</type>
+        <option />
+        <default>#8B5CF6</default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="Profile">
+      <variable>
+        <name>profile-image</name>
+        <label><![CDATA[프로필 이미지]]></label>
+        <description><![CDATA[메인 히어로 섹션에 표시되는 프로필 이미지.]]></description>
+        <type>IMAGE</type>
+        <option />
+        <default></default>
+      </variable>
+      <variable>
+        <name>profile-name</name>
+        <label><![CDATA[이름/닉네임]]></label>
+        <description><![CDATA[히어로 섹션의 헤드라인. 비우면 블로그 주인 필명이 표시됩니다.]]></description>
+        <type>STRING</type>
+        <option />
+        <default></default>
+      </variable>
+      <variable>
+        <name>profile-tagline</name>
+        <label><![CDATA[한 줄 소개]]></label>
+        <description><![CDATA[히어로 섹션의 서브 텍스트. 비우면 블로그 설명이 표시됩니다.]]></description>
+        <type>STRING</type>
+        <option />
+        <default></default>
+      </variable>
+      <variable>
+        <name>profile-link-github</name>
+        <label><![CDATA[GitHub URL]]></label>
+        <description><![CDATA[예: https://github.com/username]]></description>
+        <type>STRING</type>
+        <option />
+        <default></default>
+      </variable>
+      <variable>
+        <name>profile-link-linkedin</name>
+        <label><![CDATA[LinkedIn URL]]></label>
+        <description><![CDATA[예: https://linkedin.com/in/username]]></description>
+        <type>STRING</type>
+        <option />
+        <default></default>
+      </variable>
+      <variable>
+        <name>profile-link-email</name>
+        <label><![CDATA[이메일]]></label>
+        <description><![CDATA[예: you@example.com]]></description>
+        <type>STRING</type>
+        <option />
+        <default></default>
+      </variable>
+    </variablegroup>
+
+    <variablegroup name="Features">
+      <variable>
+        <name>cursor-glow</name>
+        <label><![CDATA[다크모드 커서 소프트 글로우]]></label>
+        <description><![CDATA[다크 모드에서 마우스 커서 주변에 은은한 글로우 효과. 거슬리면 끄세요.]]></description>
+        <type>BOOL</type>
+        <option />
+        <default>false</default>
+      </variable>
+      <variable>
+        <name>show-reading-progress</name>
+        <label><![CDATA[읽기 진행률 바]]></label>
+        <description><![CDATA[포스트 상단에 읽기 진행률을 그라데이션 바로 표시.]]></description>
+        <type>BOOL</type>
+        <option />
+        <default>true</default>
+      </variable>
+      <variable>
+        <name>chatbot-endpoint</name>
+        <label><![CDATA[챗봇 서버 URL]]></label>
+        <description><![CDATA[챗봇을 연결할 서버 URL. 비우면 챗봇이 표시되지 않습니다.]]></description>
+        <type>STRING</type>
+        <option />
+        <default></default>
+      </variable>
+    </variablegroup>
+  </variables>
+</skin>
