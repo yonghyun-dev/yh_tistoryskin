@@ -118,3 +118,9 @@
 ## 문서 폴더 규칙
 - Claude 관련 문서는 `docs/`에 위치한다
 - 프로젝트에 이미 `docs/`가 있으면 `claude_docs/`로 변경하고, 훅/CLAUDE.md의 경로도 함께 수정한다
+
+## Design System
+Always read DESIGN.md before making any visual or UI decisions.
+All font choices, colors, spacing, and aesthetic direction are defined there.
+Do not deviate without explicit user approval.
+In QA mode, flag any code that doesn't match DESIGN.md.

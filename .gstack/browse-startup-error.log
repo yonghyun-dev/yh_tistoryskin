@@ -1,0 +1,5 @@
+2026-04-20T23:43:47.348Z [browse] No available port after 5 attempts in range 10000-60000
+Error: [browse] No available port after 5 attempts in range 10000-60000
+    at findPort (/home/yhkim/.gstack/repos/gstack/browse/src/server.ts:909:13)
+    at async start (/home/yhkim/.gstack/repos/gstack/browse/src/server.ts:1394:22)
+    at processTicksAndRejections (native:7:39)
