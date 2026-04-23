@@ -76,18 +76,18 @@
       <variable>
         <name>accent-start</name>
         <label><![CDATA[액센트 시작색]]></label>
-        <description><![CDATA[제목 악센트·링크 hover·진행률 바 등에 쓰이는 그라데이션의 시작 색.]]></description>
+        <description><![CDATA[제목 악센트·링크 hover·진행률 바 등에 쓰이는 그라데이션의 시작 색. 기본값은 Dev-Archive cyan-400.]]></description>
         <type>COLOR</type>
         <option />
-        <default>#78A8FF</default>
+        <default>#38BDF8</default>
       </variable>
       <variable>
         <name>accent-end</name>
         <label><![CDATA[액센트 끝색]]></label>
-        <description><![CDATA[그라데이션의 끝 색.]]></description>
+        <description><![CDATA[그라데이션의 끝 색. 기본값은 Dev-Archive sky-500.]]></description>
         <type>COLOR</type>
         <option />
-        <default>#63CDBD</default>
+        <default>#0EA5E9</default>
       </variable>
     </variablegroup>
 
@@ -166,6 +166,14 @@
         <type>STRING</type>
         <option />
         <default></default>
+      </variable>
+      <variable>
+        <name>search-mode</name>
+        <label><![CDATA[검색 모드]]></label>
+        <description><![CDATA[⌘K 검색 오버레이의 동작 방식. overlay+preview = /rss 기반 라이브 프리뷰(기본, Dev-Archive 감각), overlay = Enter 시 서버 검색으로 이동, native = 오버레이 비활성 (상단 바 기본 폼 노출).]]></description>
+        <type>SELECT</type>
+        <option>overlay+preview|overlay|native</option>
+        <default>overlay+preview</default>
       </variable>
     </variablegroup>
   </variables>
