@@ -162,39 +162,61 @@
         </section>
 
         <!-- ========================================================
-             01 대표 글 — s_cover name="featured"
+             01 시리즈로 따라 읽기 — JS 가 SERIES_META 로 렌더
+             ======================================================== -->
+        <section class="section home-only" data-home-series>
+          <div class="section-head">
+            <h2><span class="num">01</span>시리즈로 따라 읽기</h2>
+            <a class="section-link" href="/pages/series">모든 시리즈 →</a>
+          </div>
+          <p class="section-lede">하나의 주제나 여정을 시간순으로 묶은 글 묶음입니다. 한 편씩, 천천히.</p>
+          <div class="series-grid" data-series-grid-mount>
+            <!-- script.js homeSections 모듈이 SERIES_META 상위 4개를 주입 -->
+          </div>
+        </section>
+
+        <!-- ========================================================
+             02 주제별 탐색 — JS 가 태그 cloud + 12개월 stats bars 렌더
+             ======================================================== -->
+        <section class="section home-only" data-home-tags>
+          <div class="section-head">
+            <h2><span class="num">02</span>주제별 탐색</h2>
+            <a class="section-link" href="/tag">모든 태그 →</a>
+          </div>
+          <div class="tag-cloud-section">
+            <div class="tag-cloud" data-tag-cloud-mount>
+              <s_random_tags>
+                <a href="[##_tag_link_##]" class="tag [##_tag_class_##]">#[##_tag_name_##]</a>
+              </s_random_tags>
+            </div>
+            <div class="stats" data-stats-mount>
+              <h3>activity</h3>
+              <div class="stat-grid">
+                <div class="stat-item"><div class="num" data-stat="posts">—</div><div class="label">posts</div></div>
+                <div class="stat-item"><div class="num" data-stat="tags">—</div><div class="label">topics</div></div>
+                <div class="stat-item"><div class="num" data-stat="months">—</div><div class="label">months</div></div>
+              </div>
+              <div class="stat-bars" aria-hidden="true" data-stat-bars>
+                <!-- script.js archivePage 모듈이 /rss fetch 후 12 bars 주입 -->
+              </div>
+              <div class="stat-bars-label">
+                <span data-stat-bars-start>—</span>
+                <span data-stat-bars-end>—</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========================================================
+             03 최근 기록 + 04 대표 글 — Tistory cover
              ======================================================== -->
         <s_cover_group>
           <s_cover_rep>
-            <s_cover name="featured">
-              <section class="section home-only">
-                <div class="section-head">
-                  <h2><span class="num">01</span>대표 글</h2>
-                  <a class="section-link" href="/archive">전체 글 보기 →</a>
-                </div>
-                <div class="featured">
-                  <s_cover_item>
-                    <a class="featured-item" href="[##_cover_item_url_##]">
-                      <s_cover_item_article_info>
-                        <div class="featured-meta">
-                          <span class="cat">[##_cover_item_category_##]</span>
-                          <span>·</span>
-                          <time>[##_cover_item_simple_date_##]</time>
-                        </div>
-                      </s_cover_item_article_info>
-                      <h3 class="featured-title">[##_cover_item_title_##]</h3>
-                      <p class="featured-summary">[##_cover_item_summary_##]</p>
-                    </a>
-                  </s_cover_item>
-                </div>
-              </section>
-            </s_cover>
-
-            <!-- 03 최근 활동 — s_cover name="list" (JS가 배지/아이콘 후처리) -->
+            <!-- 03 최근 기록 — s_cover name="list" (JS가 배지/아이콘 후처리) -->
             <s_cover name="list">
               <section class="section home-only" data-activity-cover>
                 <div class="section-head">
-                  <h2><span class="num">03</span>최근 활동</h2>
+                  <h2><span class="num">03</span>최근 기록</h2>
                   <s_cover_url>
                     <a class="section-link" href="[##_cover_url_##]">아카이브 →</a>
                   </s_cover_url>
@@ -238,54 +260,33 @@
                 </div>
               </section>
             </s_cover>
+
+            <!-- 04 대표 글 — s_cover name="featured" -->
+            <s_cover name="featured">
+              <section class="section home-only">
+                <div class="section-head">
+                  <h2><span class="num">04</span>대표 글</h2>
+                  <a class="section-link" href="/archive">전체 글 보기 →</a>
+                </div>
+                <div class="featured">
+                  <s_cover_item>
+                    <a class="featured-item" href="[##_cover_item_url_##]">
+                      <s_cover_item_article_info>
+                        <div class="featured-meta">
+                          <span class="cat">[##_cover_item_category_##]</span>
+                          <span>·</span>
+                          <time>[##_cover_item_simple_date_##]</time>
+                        </div>
+                      </s_cover_item_article_info>
+                      <h3 class="featured-title">[##_cover_item_title_##]</h3>
+                      <p class="featured-summary">[##_cover_item_summary_##]</p>
+                    </a>
+                  </s_cover_item>
+                </div>
+              </section>
+            </s_cover>
           </s_cover_rep>
         </s_cover_group>
-
-        <!-- ========================================================
-             02 시리즈로 따라 읽기 — JS 가 SERIES_META 로 렌더 (Phase 4)
-             ======================================================== -->
-        <section class="section home-only" data-home-series>
-          <div class="section-head">
-            <h2><span class="num">02</span>시리즈로 따라 읽기</h2>
-            <a class="section-link" href="/pages/series">모든 시리즈 →</a>
-          </div>
-          <p class="section-lede">하나의 주제나 여정을 시간순으로 묶은 글 묶음입니다. 한 편씩, 천천히.</p>
-          <div class="series-grid" data-series-grid-mount>
-            <!-- script.js homeSections 모듈이 SERIES_META 상위 4개를 주입 -->
-          </div>
-        </section>
-
-        <!-- ========================================================
-             04 주제별 탐색 — JS 가 태그 cloud + 12개월 stats bars (Phase 6)
-             ======================================================== -->
-        <section class="section home-only" data-home-tags>
-          <div class="section-head">
-            <h2><span class="num">04</span>주제별 탐색</h2>
-            <a class="section-link" href="/tag">모든 태그 →</a>
-          </div>
-          <div class="tag-cloud-section">
-            <div class="tag-cloud" data-tag-cloud-mount>
-              <s_random_tags>
-                <a href="[##_tag_link_##]" class="tag [##_tag_class_##]">#[##_tag_name_##]</a>
-              </s_random_tags>
-            </div>
-            <div class="stats" data-stats-mount>
-              <h3>activity</h3>
-              <div class="stat-grid">
-                <div class="stat-item"><div class="num" data-stat="posts">—</div><div class="label">posts</div></div>
-                <div class="stat-item"><div class="num" data-stat="tags">—</div><div class="label">topics</div></div>
-                <div class="stat-item"><div class="num" data-stat="months">—</div><div class="label">months</div></div>
-              </div>
-              <div class="stat-bars" aria-hidden="true" data-stat-bars>
-                <!-- script.js archivePage 모듈이 /rss fetch 후 12 bars 주입 -->
-              </div>
-              <div class="stat-bars-label">
-                <span data-stat-bars-start>—</span>
-                <span data-stat-bars-end>—</span>
-              </div>
-            </div>
-          </div>
-        </section>
 
         <!-- ========================================================
              05 아카이브 진입 — 정적 2 CTA
@@ -591,7 +592,7 @@
         </section>
 
         <s_sidebar>
-          <!-- Tistory 실제 카테고리 소스 (숨김): JS 가 파싱해 홈 02 카드 / /pages/series 리스트 생성 -->
+          <!-- Tistory 실제 카테고리 소스 (숨김): JS 가 파싱해 홈 01 카드 / /pages/series 리스트 생성 -->
           <s_sidebar_element>
             <div class="tistory-categories-source" data-categories-source hidden>
               [##_category_list_##]

@@ -76,18 +76,18 @@
       <variable>
         <name>accent-start</name>
         <label><![CDATA[액센트 시작색]]></label>
-        <description><![CDATA[제목 악센트·링크 hover·진행률 바 등에 쓰이는 그라데이션의 시작 색. 기본값은 Dev-Archive cyan-400.]]></description>
+        <description><![CDATA[제목 악센트·링크 hover·진행률 바 등에 쓰이는 시작 색. 기본값은 Terminal Archive amber.]]></description>
         <type>COLOR</type>
         <option />
-        <default>#38BDF8</default>
+        <default>#D08A3F</default>
       </variable>
       <variable>
         <name>accent-end</name>
         <label><![CDATA[액센트 끝색]]></label>
-        <description><![CDATA[그라데이션의 끝 색. 기본값은 Dev-Archive sky-500.]]></description>
+        <description><![CDATA[강조 상태에 쓰이는 끝 색. 기본값은 warm amber.]]></description>
         <type>COLOR</type>
         <option />
-        <default>#0EA5E9</default>
+        <default>#C26A1B</default>
       </variable>
     </variablegroup>
 

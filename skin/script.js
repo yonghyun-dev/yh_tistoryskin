@@ -267,7 +267,7 @@
   }
 
   // 이름 해시 기반 결정적 accent (6색 팔레트)
-  const CATEGORY_PALETTE = ["#f59e0b", "#38bdf8", "#a78bfa", "#2dd4bf", "#60a5fa", "#fb7185"];
+  const CATEGORY_PALETTE = ["#D08A3F", "#7F8F54", "#A8532A", "#6F8C76", "#B8894A", "#A96853"];
   function categoryAccent(name) {
     let h = 0;
     for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) | 0;
@@ -275,9 +275,9 @@
   }
 
   /* ---------------------------------------------------------------
-   * homeSections — 홈의 섹션 02 (카테고리 그리드) + 04 (stats/bars) 렌더
-   *   - 02: Tistory [##_category_list_##] 기반 실제 카테고리 상위 4개
-   *   - 04: /rss 로 posts/topics/months 카운트 + 최근 12개월 activity bars
+   * homeSections — 홈의 섹션 01 (카테고리 그리드) + 02 (stats/bars) 렌더
+   *   - 01: Tistory [##_category_list_##] 기반 실제 카테고리 상위 4개
+   *   - 02: /rss 로 posts/topics/months 카운트 + 최근 12개월 activity bars
    *   - 홈(tt-body-index) 에서만 동작
    * --------------------------------------------------------------- */
 
@@ -346,7 +346,7 @@
       const startEl  = document.querySelector("[data-stat-bars-start]");
       const endEl    = document.querySelector("[data-stat-bars-end]");
 
-      // 04 섹션이 없는 스킨 변경 상황 대비: mount 하나라도 있으면 진행
+      // 02 섹션이 없는 스킨 변경 상황 대비: mount 하나라도 있으면 진행
       if (!postsEl && !tagsEl && !monthsEl && !barsEl) return;
 
       // "topics" 는 실제 카테고리 개수 (태그 섞인 RSS <category> 말고
