@@ -8,7 +8,7 @@
  *   theme         — 라이트/다크 모드 토글 (localStorage + prefers-color-scheme)
  *   pageTransition — 페이지 진입 페이드인
  *   progress      — 포스트 읽기 진행률 바
- *   toc           — 포스트 본문 h2/h3 스캔 → TOC 생성 + active 하이라이트
+ *   toc           — 포스트 본문 h1/h2/h3 스캔 → TOC 생성 + active 하이라이트
  *   readingTime   — 본문 길이 기반 예상 읽기 시간
  *   codeBlocks    — highlight.js 연동 (라이브러리 로드 대기 후 자동 하이라이트)
  *   tagPage       — /tag vs /tag/X URL 기반 body 클래스 분기 (U-2)
@@ -129,7 +129,7 @@
 
 
   /* ---------------------------------------------------------------
-   * toc — 본문 h2/h3 스캔, id 부여, active 하이라이트
+   * toc — 본문 h1/h2/h3 스캔, id 부여, active 하이라이트
    * --------------------------------------------------------------- */
 
   const toc = {
@@ -140,7 +140,7 @@
       const wrap = container ? container.closest(".post__toc-wrap") : null;
       if (!body || !container || !wrap) return;
 
-      const headings = body.querySelectorAll("h2, h3");
+      const headings = body.querySelectorAll("h1, h2, h3");
       if (headings.length === 0) {
         wrap.remove();
         const fab = document.querySelector("[data-toc-fab]");

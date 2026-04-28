@@ -3326,6 +3326,7 @@ body {
   line-height: 1.82;
 }
 
+.post__body h1,
 .post__body h2,
 .post__body h3,
 .post__body h4 {
@@ -3335,11 +3336,51 @@ body {
   letter-spacing: -0.03em;
 }
 
+.post__body h1 {
+  font-size: clamp(1.7rem, 2.7vw, 2.15rem);
+  line-height: 1.25;
+}
+
+.post__body h2 {
+  font-size: clamp(1.45rem, 2.2vw, 1.75rem);
+  line-height: 1.3;
+}
+
+.post__body h3 {
+  font-size: clamp(1.2rem, 1.8vw, 1.42rem);
+  line-height: 1.36;
+}
+
+.post__body h4 {
+  font-size: 1.08rem;
+  line-height: 1.45;
+}
+
+.post__body .tt_article_useless_p_margin > h1:first-child,
+.post__body .tt_article_useless_p_margin > h2:first-child,
+.post__body .tt_article_useless_p_margin > h3:first-child {
+  margin-top: 0;
+}
+
 .post__body p,
 .post__body ul,
 .post__body ol,
 .post__body blockquote {
   margin-bottom: var(--space-5);
+}
+
+.post__body .tt_article_useless_p_margin p {
+  margin: 0 0 var(--space-5) !important;
+}
+
+.post__body .tt_article_useless_p_margin ul,
+.post__body .tt_article_useless_p_margin ol {
+  margin: 0 0 var(--space-5) !important;
+  padding-left: 1.35rem;
+}
+
+.post__body .tt_article_useless_p_margin li {
+  margin: 0.35rem 0;
 }
 
 .post__body a {
@@ -3358,6 +3399,11 @@ body {
   body#tt-body-page .post__layout {
     grid-template-columns: minmax(0, 1fr) 240px;
     gap: var(--space-12);
+  }
+
+  body#tt-body-page .post__layout:not(:has(.post__toc-wrap)) {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: var(--post-max);
   }
 
   body#tt-body-page .post__toc-wrap {
@@ -3443,7 +3489,7 @@ body {
   }
 
   .site-header__logo-meta,
-  .site-nav,
+  .nav,
   .site-search {
     display: none;
   }
