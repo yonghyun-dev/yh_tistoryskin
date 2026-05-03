@@ -118,8 +118,8 @@
       <div class="site-main__primary">
 
         <!-- ========================================================
-             홈 히어로 (Dev-Archive .home-hero: pulse 라인 + avatar)
-             주: s_cover_group 내부의 정적 콘텐츠는 홈에서만 렌더됨.
+             홈 히어로 (Tech Blog Hub: 좌측 선언 + 우측 about 패널)
+             주: 홈 전용 섹션은 body#tt-body-index 에서만 보이도록 CSS 제어.
                  꺾쇠 없이 적는다 (주석 안 꺾쇠는 Tistory 파서가 진짜 태그로 인식함).
                  단독 헤더는 body#tt-body-index 에서 CSS 로 show/hide
              ======================================================== -->
@@ -135,53 +135,125 @@
               </h1>
               <p>잘 정돈된 글, 트러블슈팅 기록, 그리고 가끔의 회고가 이곳에 쌓입니다.</p>
               <div class="meta-line">
-                <span class="pulse">recent notes</span>
-                <span>· field logs</span>
-                <span>· career archive</span>
+                <span><strong data-stat="posts">—</strong> posts</span>
+                <span><strong data-stat="tags">—</strong> topics</span>
+                <span><strong data-stat="months">—</strong> months</span>
+                <span>last update <strong data-stat-last-update>—</strong></span>
               </div>
             </div>
-            <div class="profile">
-              <s_if_var_profile-image>
-                <img class="avatar avatar--img" src="[##_var_profile-image_##]" alt="프로필 이미지" />
-              </s_if_var_profile-image>
-              <s_not_var_profile-image>
-                <div class="avatar" aria-hidden="true">
+            <div class="profile home-about">
+              <div class="home-about__kicker mono">about</div>
+              <p>검색·LLM 시스템을 만드는 엔지니어. 천천히 깊게 파고드는 글을 씁니다.</p>
+              <div class="home-about__foot mono">
+                <span>
                   <s_if_var_profile-name>[##_var_profile-name_##]</s_if_var_profile-name>
-                  <s_not_var_profile-name>[##_blogger_##]</s_not_var_profile-name>
-                </div>
-              </s_not_var_profile-image>
-              <div class="profile-text">
-                <span class="profile-name">
-                  <s_if_var_profile-name>[##_var_profile-name_##]</s_if_var_profile-name>
-                  <s_not_var_profile-name>[##_blogger_##]</s_not_var_profile-name>
+                  <s_not_var_profile-name>yonghyun@devlog</s_not_var_profile-name>
                 </span>
-                <span class="profile-role">Developer archive</span>
+                <div class="home-about__links">
+                  <s_if_var_profile-link-github>
+                    <a href="[##_var_profile-link-github_##]" target="_blank" rel="noopener noreferrer">github</a>
+                  </s_if_var_profile-link-github>
+                  <s_if_var_profile-link-email>
+                    <a href="mailto:[##_var_profile-link-email_##]">email</a>
+                  </s_if_var_profile-link-email>
+                  <a href="[##_rss_url_##]" aria-label="RSS">rss</a>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         <!-- ========================================================
-             01 시리즈로 따라 읽기 — JS 가 SERIES_META 로 렌더
+             01 최근에 올린 글 — Tistory 기본 글 목록
              ======================================================== -->
-        <section class="section home-only" data-home-series>
-          <div class="section-head">
-            <h2><span class="num">01</span>시리즈로 따라 읽기</h2>
-            <a class="section-link" href="/pages/series">모든 시리즈 →</a>
+        <s_list>
+          <section class="list home-latest">
+            <header class="list__head">
+              <div class="section-head list__home-head">
+                <h2><span class="num">01</span>최근에 올린 글</h2>
+                <a class="section-link" href="/archive">모든 글 ↗</a>
+              </div>
+              <div class="list__archive-head">
+                <h2 class="list__title">[##_list_conform_##]</h2>
+                <p class="list__count">[##_list_count_##]개의 글</p>
+              </div>
+            </header>
+
+            <s_list_empty>
+              <div class="list__empty">
+                <p>표시할 글이 없습니다.</p>
+              </div>
+            </s_list_empty>
+
+            <ul class="card-grid">
+              <s_list_rep>
+                <li class="card" data-fade-in>
+                  <a class="card__link" href="[##_list_rep_link_##]">
+                    <s_list_rep_thumbnail>
+                      <div class="card__thumb">
+                        <img src="[##_list_rep_thumbnail_url_##]" alt="" loading="lazy" />
+                      </div>
+                    </s_list_rep_thumbnail>
+                    <div class="card__body">
+                      <p class="card__category">[##_list_rep_category_##]</p>
+                      <h3 class="card__title">[##_list_rep_title_text_##]</h3>
+                      <p class="card__summary">[##_list_rep_summary_##]</p>
+                      <p class="card__meta">
+                        <time>[##_list_rep_regdate_##]</time>
+                        <span class="card__dot">·</span>
+                        <span>댓글 [##_list_rep_rp_cnt_##]</span>
+                      </p>
+                    </div>
+                  </a>
+                </li>
+              </s_list_rep>
+            </ul>
+
+            <s_paging>
+              <nav class="paging" aria-label="페이지 이동">
+                <a class="paging__btn paging__btn--prev [##_no_more_prev_##]" [##_prev_page_##]>← 이전</a>
+                <ul class="paging__nums">
+                  <s_paging_rep>
+                    <li><a class="paging__num" [##_paging_rep_link_##]>[##_paging_rep_link_num_##]</a></li>
+                  </s_paging_rep>
+                </ul>
+                <a class="paging__btn paging__btn--next [##_no_more_next_##]" [##_next_page_##]>다음 →</a>
+              </nav>
+            </s_paging>
+          </section>
+        </s_list>
+
+        <!-- ========================================================
+             02 시리즈 + 03 최근 발행
+             ======================================================== -->
+        <section class="section home-only home-split">
+          <div data-home-series>
+            <div class="section-head">
+              <h2><span class="num">02</span>시리즈</h2>
+              <a class="section-link" href="/pages/series">모든 시리즈 ↗</a>
+            </div>
+            <div class="series-grid home-series-list" data-series-grid-mount>
+              <!-- script.js homeSections 모듈이 실제 카테고리 상위 3개를 주입 -->
+            </div>
           </div>
-          <p class="section-lede">하나의 주제나 여정을 시간순으로 묶은 글 묶음입니다. 한 편씩, 천천히.</p>
-          <div class="series-grid" data-series-grid-mount>
-            <!-- script.js homeSections 모듈이 SERIES_META 상위 4개를 주입 -->
+          <div data-home-recent>
+            <div class="section-head">
+              <h2><span class="num">03</span>최근 발행</h2>
+              <a class="section-link" href="/archive">아카이브 ↗</a>
+            </div>
+            <ol class="recent-mini" data-recent-list-mount>
+              <li class="recent-mini__empty">최근 발행 글을 불러오는 중입니다.</li>
+            </ol>
           </div>
         </section>
 
         <!-- ========================================================
-             02 주제별 탐색 — JS 가 태그 cloud + 12개월 stats bars 렌더
+             04 주제별 탐색 — JS 가 태그 cloud + 12개월 stats bars 렌더
              ======================================================== -->
         <section class="section home-only" data-home-tags>
           <div class="section-head">
-            <h2><span class="num">02</span>주제별 탐색</h2>
-            <a class="section-link" href="/tag">모든 태그 →</a>
+            <h2><span class="num">04</span>주제별 탐색</h2>
+            <a class="section-link" href="/tag">모든 태그 ↗</a>
           </div>
           <div class="tag-cloud-section">
             <div class="tag-cloud" data-tag-cloud-mount>
@@ -204,108 +276,6 @@
                 <span data-stat-bars-end>—</span>
               </div>
             </div>
-          </div>
-        </section>
-
-        <!-- ========================================================
-             03 최근 기록 + 04 대표 글 — Tistory cover
-             ======================================================== -->
-        <s_cover_group>
-          <s_cover_rep>
-            <!-- 03 최근 기록 — s_cover name="list" (JS가 배지/아이콘 후처리) -->
-            <s_cover name="list">
-              <section class="section home-only" data-activity-cover>
-                <div class="section-head">
-                  <h2><span class="num">03</span>최근 기록</h2>
-                  <s_cover_url>
-                    <a class="section-link" href="[##_cover_url_##]">아카이브 →</a>
-                  </s_cover_url>
-                </div>
-                <div class="activity">
-                  <s_cover_item>
-                    <s_cover_item_article_info>
-                      <a class="activity-row" href="[##_cover_item_url_##]" data-fade-in
-                         data-category="[##_cover_item_category_##]">
-                        <div class="activity-date">
-                          <span class="activity-kind" aria-hidden="true"></span>
-                          <time>[##_cover_item_simple_date_##]</time>
-                        </div>
-                        <div class="activity-body">
-                          <p class="activity-title">[##_cover_item_title_##]</p>
-                          <div class="activity-sub">
-                            <span class="badge" data-activity-badge>POST</span>
-                            <span>[##_cover_item_category_##]</span>
-                          </div>
-                        </div>
-                        <svg class="activity-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                          <path d="M5 12h14M13 5l7 7-7 7"/>
-                        </svg>
-                      </a>
-                    </s_cover_item_article_info>
-                    <s_cover_item_not_article_info>
-                      <a class="activity-row" href="[##_cover_item_url_##]" data-fade-in>
-                        <div class="activity-date">
-                          <span class="activity-kind" aria-hidden="true"></span>
-                          <span class="mono">—</span>
-                        </div>
-                        <div class="activity-body">
-                          <p class="activity-title">[##_cover_item_title_##]</p>
-                          <div class="activity-sub">
-                            <span class="badge">LINK</span>
-                          </div>
-                        </div>
-                      </a>
-                    </s_cover_item_not_article_info>
-                  </s_cover_item>
-                </div>
-              </section>
-            </s_cover>
-
-            <!-- 04 대표 글 — s_cover name="featured" -->
-            <s_cover name="featured">
-              <section class="section home-only">
-                <div class="section-head">
-                  <h2><span class="num">04</span>대표 글</h2>
-                  <a class="section-link" href="/archive">전체 글 보기 →</a>
-                </div>
-                <div class="featured">
-                  <s_cover_item>
-                    <a class="featured-item" href="[##_cover_item_url_##]">
-                      <s_cover_item_article_info>
-                        <div class="featured-meta">
-                          <span class="cat">[##_cover_item_category_##]</span>
-                          <span>·</span>
-                          <time>[##_cover_item_simple_date_##]</time>
-                        </div>
-                      </s_cover_item_article_info>
-                      <h3 class="featured-title">[##_cover_item_title_##]</h3>
-                      <p class="featured-summary">[##_cover_item_summary_##]</p>
-                    </a>
-                  </s_cover_item>
-                </div>
-              </section>
-            </s_cover>
-          </s_cover_rep>
-        </s_cover_group>
-
-        <!-- ========================================================
-             05 아카이브 진입 — 정적 2 CTA
-             ======================================================== -->
-        <section class="section home-only">
-          <div class="section-head">
-            <h2><span class="num">05</span>아카이브 진입</h2>
-          </div>
-          <div class="home-cta">
-            <a class="featured-item" href="/archive">
-              <div class="featured-meta"><span class="cat">/archive</span></div>
-              <h3 class="featured-title">전체 글을 연도별로 훑어보기</h3>
-              <p class="featured-summary">제목 한 줄, 날짜 한 줄. 빠르게 스캔하고 깊게 들어갑니다.</p>
-            </a>
-            <a class="featured-item" href="/tag">
-              <div class="featured-meta"><span class="cat">/tags</span></div>
-              <h3 class="featured-title">관심 있는 주제부터 시작하기</h3>
-              <p class="featured-summary">같은 태그를 단 글들을 모아서 한 번에 탐색합니다.</p>
-            </a>
           </div>
         </section>
 
@@ -357,60 +327,6 @@
             <div data-about-mount hidden></div>
           </article>
         </s_page_rep>
-
-        <!-- ========================================================
-             카드 리스트 (홈/카테고리/태그별 목록/검색 결과 공용)
-             ======================================================== -->
-        <s_list>
-          <section class="list">
-            <header class="list__head">
-              <h2 class="list__title">[##_list_conform_##]</h2>
-              <p class="list__count">[##_list_count_##]개의 글</p>
-            </header>
-
-            <s_list_empty>
-              <div class="list__empty">
-                <p>표시할 글이 없습니다.</p>
-              </div>
-            </s_list_empty>
-
-            <ul class="card-grid">
-              <s_list_rep>
-                <li class="card" data-fade-in>
-                  <a class="card__link" href="[##_list_rep_link_##]">
-                    <s_list_rep_thumbnail>
-                      <div class="card__thumb">
-                        <img src="[##_list_rep_thumbnail_url_##]" alt="" loading="lazy" />
-                      </div>
-                    </s_list_rep_thumbnail>
-                    <div class="card__body">
-                      <p class="card__category">[##_list_rep_category_##]</p>
-                      <h3 class="card__title">[##_list_rep_title_text_##]</h3>
-                      <p class="card__summary">[##_list_rep_summary_##]</p>
-                      <p class="card__meta">
-                        <time>[##_list_rep_regdate_##]</time>
-                        <span class="card__dot">·</span>
-                        <span>댓글 [##_list_rep_rp_cnt_##]</span>
-                      </p>
-                    </div>
-                  </a>
-                </li>
-              </s_list_rep>
-            </ul>
-
-            <s_paging>
-              <nav class="paging" aria-label="페이지 이동">
-                <a class="paging__btn paging__btn--prev [##_no_more_prev_##]" [##_prev_page_##]>← 이전</a>
-                <ul class="paging__nums">
-                  <s_paging_rep>
-                    <li><a class="paging__num" [##_paging_rep_link_##]>[##_paging_rep_link_num_##]</a></li>
-                  </s_paging_rep>
-                </ul>
-                <a class="paging__btn paging__btn--next [##_no_more_next_##]" [##_next_page_##]>다음 →</a>
-              </nav>
-            </s_paging>
-          </section>
-        </s_list>
 
         <!-- ========================================================
              개별 글 (permalink) — 2단 레이아웃 + TOC + 진행률 + 관련글 + 이전/다음 + 댓글
@@ -592,7 +508,7 @@
         </section>
 
         <s_sidebar>
-          <!-- Tistory 실제 카테고리 소스 (숨김): JS 가 파싱해 홈 01 카드 / /pages/series 리스트 생성 -->
+          <!-- Tistory 실제 카테고리 소스 (숨김): JS 가 파싱해 홈 03 카드 / /pages/series 리스트 생성 -->
           <s_sidebar_element>
             <div class="tistory-categories-source" data-categories-source hidden>
               [##_category_list_##]

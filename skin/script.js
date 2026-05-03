@@ -45,7 +45,7 @@
     init() {
       const stored = safeStorageGet(this.STORAGE_KEY);
       this._mql = matchMedia("(prefers-color-scheme: dark)");
-      const preferred = this._mql.matches ? "dark" : "light";
+      const preferred = ROOT.dataset.theme || "dark";
       this.apply(stored || preferred);
 
       document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
@@ -275,9 +275,10 @@
   }
 
   /* ---------------------------------------------------------------
-   * homeSections — 홈의 섹션 01 (카테고리 그리드) + 02 (stats/bars) 렌더
-   *   - 01: Tistory [##_category_list_##] 기반 실제 카테고리 상위 4개
-   *   - 02: /rss 로 posts/topics/months 카운트 + 최근 12개월 activity bars
+   * homeSections — 홈의 섹션 02 (series) + 03 (recent) + 04 (topics/stats) 렌더
+   *   - 02: Tistory [##_category_list_##] 기반 실제 카테고리 상위 4개
+   *   - 03: /rss 기반 최근 발행 미니 리스트
+   *   - 04: /rss 로 posts/topics/months 카운트 + 최근 12개월 activity bars
    *   - 홈(tt-body-index) 에서만 동작
    * --------------------------------------------------------------- */
 
@@ -285,6 +286,7 @@
     init() {
       if (document.body.id !== "tt-body-index") return;
       this.renderSeriesGrid();
+      this.renderRecentList();
       this.renderStats();
     },
 
@@ -298,8 +300,8 @@
         return;
       }
 
-      // 글 수 많은 순 정렬 후 상위 4개
-      const top = cats.slice().sort((a, b) => b.count - a.count).slice(0, 4);
+      // 글 수 많은 순 정렬 후 상위 3개
+      const top = cats.slice().sort((a, b) => b.count - a.count).slice(0, 3);
 
       // 최신 글 매칭: RSS entry 의 <category> 중 실제 카테고리명과 일치하는 엔트리
       const realCatSet = new Set(cats.map((c) => c.name));
@@ -315,39 +317,86 @@
             }
           });
           top.forEach((c) => { c.latest = latestPerCat.get(c.name) || null; });
-          mount.innerHTML = top.map((c) => cardHtml(c)).join("");
+          mount.innerHTML = top.map((c, i) => cardHtml(c, i)).join("");
         })
         .catch(() => {
-          mount.innerHTML = top.map((c) => cardHtml(c)).join("");
+          mount.innerHTML = top.map((c, i) => cardHtml(c, i)).join("");
         });
 
-      function cardHtml(c) {
+      function cardHtml(c, index) {
+        const total = Math.max(c.count, 1);
+        const done = Math.max(1, Math.min(total, Math.ceil(total * 0.7)));
+        const pct = Math.round((done / total) * 100);
         return `
-          <a class="series-card" href="${c.href}" style="--series-accent:${categoryAccent(c.name)};">
-            <div class="series-card__head">
-              <span class="series-dot" aria-hidden="true"></span>
-              <span class="series-card__subtitle mono">${c.count} post${c.count > 1 ? "s" : ""}</span>
-            </div>
-            <h3 class="series-card__title">${escapeHtml(c.name)}</h3>
-            <p class="series-card__desc">${c.latest ? "최근 글 — " + escapeHtml(c.latest.title) : ""}</p>
-            <div class="series-card__foot mono">
-              <span class="series-card__cta">시간순으로 읽기 →</span>
-            </div>
+          <a class="home-series-row" href="${c.href}" style="--series-accent:${categoryAccent(c.name)};">
+            <span class="home-series-row__index mono">${String(index + 1).padStart(2, "0")}</span>
+            <span class="home-series-row__title">${escapeHtml(c.name)}</span>
+            <span class="home-series-row__count mono">${done}/${total}</span>
+            <span class="home-series-row__bar" aria-hidden="true">
+              <span style="width:${pct}%;"></span>
+            </span>
+            <span class="home-series-row__arrow" aria-hidden="true">›</span>
           </a>
         `;
       }
     },
 
+    renderRecentList() {
+      const mount = document.querySelector("[data-recent-list-mount]");
+      if (!mount) return;
+
+      loadRssEntries()
+        .then((entries) => {
+          const recent = entries.slice(0, 4);
+          if (recent.length === 0) {
+            mount.innerHTML = `<li class="recent-mini__empty">최근 발행 글이 없습니다.</li>`;
+            return;
+          }
+
+          mount.innerHTML = recent.map((entry, index) => {
+            const date = formatMonthDay(entry.date);
+            return `
+              <li>
+                <a href="${entry.link || "/"}">
+                  <span class="recent-mini__index mono">${String(index + 1).padStart(2, "0")}</span>
+                  <span class="recent-mini__title">${escapeHtml(entry.title || "제목 없음")}</span>
+                  <time class="recent-mini__date mono">${date}</time>
+                </a>
+              </li>
+            `;
+          }).join("");
+        })
+        .catch(() => {
+          mount.innerHTML = `
+            <li>
+              <a href="/archive">
+                <span class="recent-mini__index mono">01</span>
+                <span class="recent-mini__title">아카이브에서 최근 글 보기</span>
+                <span class="recent-mini__date mono">now</span>
+              </a>
+            </li>
+          `;
+        });
+
+      function formatMonthDay(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "—";
+        return String(date.getMonth() + 1).padStart(2, "0") + "." + String(date.getDate()).padStart(2, "0");
+      }
+    },
+
     renderStats() {
-      const postsEl  = document.querySelector('[data-stat="posts"]');
-      const tagsEl   = document.querySelector('[data-stat="tags"]');
-      const monthsEl = document.querySelector('[data-stat="months"]');
+      const postsEls = document.querySelectorAll('[data-stat="posts"]');
+      const tagsEls = document.querySelectorAll('[data-stat="tags"]');
+      const monthsEls = document.querySelectorAll('[data-stat="months"]');
+      const lastUpdateEls = document.querySelectorAll("[data-stat-last-update]");
       const barsEl   = document.querySelector("[data-stat-bars]");
       const startEl  = document.querySelector("[data-stat-bars-start]");
       const endEl    = document.querySelector("[data-stat-bars-end]");
 
-      // 02 섹션이 없는 스킨 변경 상황 대비: mount 하나라도 있으면 진행
-      if (!postsEl && !tagsEl && !monthsEl && !barsEl) return;
+      // 04 섹션이 없는 스킨 변경 상황 대비: mount 하나라도 있으면 진행
+      if (!postsEls.length && !tagsEls.length && !monthsEls.length && !lastUpdateEls.length && !barsEl) return;
 
       // "topics" 는 실제 카테고리 개수 (태그 섞인 RSS <category> 말고
       //  [##_category_list_##] 기반 loadTistoryCategories 사용)
@@ -361,9 +410,10 @@
             if (e.date) monthSet.add(e.date.slice(0, 7)); // YYYY-MM
           });
 
-          if (postsEl)  postsEl.textContent  = String(posts);
-          if (tagsEl)   tagsEl.textContent   = String(realCats.length);
-          if (monthsEl) monthsEl.textContent = String(monthSet.size);
+          postsEls.forEach((el) => { el.textContent = String(posts); });
+          tagsEls.forEach((el) => { el.textContent = String(realCats.length); });
+          monthsEls.forEach((el) => { el.textContent = String(monthSet.size); });
+          lastUpdateEls.forEach((el) => { el.textContent = formatMonthDay(entries[0] && entries[0].date); });
 
           // 최근 12개월 버킷 (오래된 → 최신 순)
           if (barsEl) {
@@ -393,9 +443,15 @@
           }
         })
         .catch(() => { /* RSS 실패 시 기존 "—" 표시를 그대로 유지 */ });
+
+      function formatMonthDay(value) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "—";
+        return String(date.getMonth() + 1).padStart(2, "0") + "." + String(date.getDate()).padStart(2, "0");
+      }
     },
   };
-
 
   /* ---------------------------------------------------------------
    * pageRouter — Tistory PAGE 인지 판별 + 어떤 페이지인지 분기
