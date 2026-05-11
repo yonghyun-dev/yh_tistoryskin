@@ -2416,13 +2416,17 @@ body#tt-body-page .toc-fab { display: flex; }
 
 .post__related-item a {
   display: grid;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 1fr;
   gap: var(--space-4);
   align-items: center;
   padding: var(--space-3);
   border-radius: var(--radius-md);
   color: inherit;
   transition: background-color var(--dur-fast);
+}
+
+.post__related-item a:has(.post__related-thumb) {
+  grid-template-columns: 80px 1fr;
 }
 
 .post__related-item a:hover {
@@ -2445,6 +2449,7 @@ body#tt-body-page .toc-fab { display: flex; }
   font-weight: var(--fw-medium);
   line-height: var(--lh-snug);
   margin-bottom: var(--space-1);
+  word-break: keep-all;
 }
 
 .post__related-item-date {
@@ -2801,7 +2806,7 @@ body.is-loaded { opacity: 1; }
 
   .post { padding: var(--space-4) 0 var(--space-10); }
 
-  .post__related-item a { grid-template-columns: 64px 1fr; }
+  .post__related-item a:has(.post__related-thumb) { grid-template-columns: 64px 1fr; }
 
   .protected__form { flex-direction: column; }
 }
